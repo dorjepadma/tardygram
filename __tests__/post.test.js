@@ -1,5 +1,4 @@
-require('dotenv').config();
-const { getPost, getUser, getAgent } = require('../db/data-helpers');
+const { getPosts, getUser, getAgent, getPost, getComments } = require('../db/data-helpers');
 const request = require('supertest');
 const app = require('../lib/app');
 
@@ -7,22 +6,26 @@ describe('post routes', () => {
   
   it('creates a post', async() => {
     const user = await getUser({
-      email: 'happy@happyvixen.com'
+      username: 'vixen'
     });
-    console.log(user);
+   
     return getAgent()
-      .post('/api/v1/post')
-      .send({ 
+      .post('/api/v1/posts')
+      .send({
         photoUrl: 'https://picsum.photos/200/300',
         caption: 'What a swass photo',
-        tags: '#swassPhoto' })
+        tags: ['#swassPhoto'],
+        user: user._id
+      })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          userId: user._id,
+          user: user._id,
           photoUrl: 'https://picsum.photos/200/300',
           caption: 'What a swass photo',
-          tags: '#swassPhoto', 
+          tags: '#swassPhoto',
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
           __v: 0
         });
       });

@@ -1,32 +1,34 @@
 const User = require('../lib/models/User');
 const Post = require('../lib/models/Post');
-// const Comment = require('../lib/models/Comment');
+const Comment = require('../lib/models/Comment');
 const chance = require('chance').Chance();
 
-
-module.exports = async({ postToCreate = 16, } = {}) => {
+module.exports = async({ postsToCreate = 16, usersToCreate = 16, commentsToCreate = 16 } = {}) => {
+  const loggedInUser = await User.create({
+    username: 'vixen',
+    password: 'password',
+    profilePhotoUrl: 'awesome.jpeg'
+  });
   
   const users = await User.create([...Array(usersToCreate)].slice(1).map(() => ({
-    email: chance.email(),
-    password: chance.animal()
+    username: chance.name(),
+    password: chance.animal(),
+    profilePhotoUrl: 'awesome.jpeg'
   })));
 
-  const username = ['@happyvixen', '@mellowdude', '@spunkypuppy'];
-  const posts = await Post.create([...Array(postToCreate)].map(() => ({
-    userId: chance.pickone(username),
-    photoUrl: 'https://picsum.photos/200/300',
+  const posts = await Post.create([...Array(postsToCreate)].map(() => ({
+    photoUrl: chance.profession(),
     caption: chance.sentence(),
-    tags: chance.word()
+    user: chance.weighted([loggedInUser, ...users], [2, ...users.map(() => 1)])._id
   })));
-
-  // await Comment.create([...Array(commentsToCreate)].map(() => ({
-  //   postId: chance.pickone(posts)._id,
-  //   userId: chance.pickone(username),
-  //   caption: chance.sentence(),
-  //   tags: chance.word()
-  // })));
+  
+  await Comment.create([...Array(commentsToCreate)].slice(1).map(() => ({
+    post: chance.pickone(posts),
+    comment: chance.sentence(),
+    commentBy: chance.weighted([loggedInUser, ...users], [2, ...users.map(() => 1)])._id
+  })));
 };
-// commentsToCreate = 16
+
 
 
 
