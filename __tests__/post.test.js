@@ -33,4 +33,17 @@ describe('post routes', () => {
         });
       });
   });
+  it('gets post by id', async() => {
+    const user = await getUser({ username: 'vixen' });
+    const post = await getPost({ user: user._id });
+
+    return getAgent()
+      .get(`/api/v1/posts/${post._id}`)
+      .then(res => {
+        expect(res.body).toEqual({
+          ...post,
+          user: user._id,
+        });
+      });
+  });
 });
