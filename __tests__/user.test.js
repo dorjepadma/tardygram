@@ -22,26 +22,26 @@ describe('auth routes', () => {
   it('signs up a user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
-      .send({ username: 'Jelly Roll', password: 'strawberry Jam', profilePhotoUrl: 'https://picsum.photos/200/300' })
+      .send({ username: 'vixen', password: 'strawberry Jam', profilePhotoUrl: 'https://picsum.photos/200/300' })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          username: 'Jelly Roll',
+          username: 'vixen',
           profilePhotoUrl: 'https://picsum.photos/200/300',
           __v: 0
         });
       });
   });
   it('logs in a user', async() => {
-    await User.create({ username: 'Jelly Roll', password: 'Strawberry Jam', profilePhotoUrl: 'https://picsum.photos/200/300' });
+    await User.create({ username: 'vixen', password: 'Strawberry Jam', profilePhotoUrl: 'https://picsum.photos/200/300' });
 
     return request(app)
       .post('/api/v1/auth/login')
-      .send({ username: 'Jelly Roll', password: 'Strawberry Jam', profilePhotoUrl: 'https://picsum.photos/200/300' })
+      .send({ username: 'vixen', password: 'Strawberry Jam', profilePhotoUrl: 'https://picsum.photos/200/300' })
       .then(res => {
         expect(res.body).toEqual({
           _id: expect.any(String),
-          username: 'Jelly Roll',
+          username: 'vixen',
           profilePhotoUrl: 'https://picsum.photos/200/300',
           __v: 0
         });

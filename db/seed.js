@@ -1,13 +1,14 @@
 const User = require('../lib/models/User');
 const Post = require('../lib/models/Post');
 const Comment = require('../lib/models/Comment');
+// eslint-disable-next-line new-cap
 const chance = require('chance').Chance();
 
 module.exports = async({ postsToCreate = 16, usersToCreate = 16, commentsToCreate = 16 } = {}) => {
   const loggedInUser = await User.create({
     username: 'vixen',
     password: 'password',
-    profilePhotoUrl: 'awesome.jpeg'
+    profilePhotoUrl: 'https://picsum.photos/200/300'
   });
   
   const users = await User.create([...Array(usersToCreate)].slice(1).map(() => ({
