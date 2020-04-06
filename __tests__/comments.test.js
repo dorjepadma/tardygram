@@ -26,5 +26,14 @@ describe('comment routes', () => {
         });
       });
   });
+  it('deletes a comment', async() => {
+    const comment = await getComment();
+
+    return getAgent()
+      .delete(`/api/v1/comments/${comment._id}`)
+      .then(res => {
+        expect(res.body).toEqual(comment);
+      });
+  });
 });
 
