@@ -14,7 +14,7 @@ module.exports = async({ postsToCreate = 16, usersToCreate = 16, commentsToCreat
   const users = await User.create([...Array(usersToCreate)].slice(1).map(() => ({
     username: chance.name(),
     password: chance.animal(),
-    profilePhotoUrl: 'awesome.jpeg'
+    profilePhotoUrl: 'https://picsum.photos/200/300'
   })));
 
   const posts = await Post.create([...Array(postsToCreate)].map(() => ({
