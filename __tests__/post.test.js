@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+const request = require('supertest');
+const app = require('../lib/app');
+
 const { getPosts, getUser, getAgent, getPost, } = require('../db/data-helpers');
 
 describe('post routes', () => {
@@ -30,6 +33,7 @@ describe('post routes', () => {
         });
       });
   });
+
   it('gets post by id', async() => {
     const user = await getUser({ username: 'vixen' });
     const post = await getPost({ user: user._id });
@@ -67,6 +71,7 @@ describe('post routes', () => {
         });
       });
   });
+
   it('deletes a post', async() => {
     const user = await getUser({ username: 'vixen' });
     const post = await getPost({ user: user._id }); 
